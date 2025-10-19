@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+speechrecognition
+python-dotenv
+google-generativeai
+openai
+groq
+python-multipart
+pydub
+gtts
+pyttsx3
+httpx
+aiohttp
+ffmpeg-python
+soundfile
+motor
