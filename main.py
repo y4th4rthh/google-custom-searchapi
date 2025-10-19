@@ -99,7 +99,7 @@ async def google_search(query: str, num_results: int = 5):
 
     async with httpx.AsyncClient() as client:
         resp = await client.get(url, params=params)
-        data = await resp.json()
+        data = resp.json()
 
     results = []
     for item in data.get("items", []):
