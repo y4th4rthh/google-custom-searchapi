@@ -108,6 +108,7 @@ async def google_search(query: str, num_results: int = 5):
             "snippet": item.get("snippet"),
             "link": item.get("link")
         })
+    print(results)
     return results
 
 
@@ -143,6 +144,7 @@ async def google_ai_answer(query):
     print(f"🔍 Searching Google for: {query}")
     search_data = await google_search(query)
     summary = await summarize_google_results(query, search_data)
+    print(summary)
 
     formatted_urls = "\n".join([d["link"] for d in search_data]) if search_data else "No links found."
     return f"📝 **Summary:**\n\n{summary}\n\n🔗 **Sources:**\n{formatted_urls}"
