@@ -53,7 +53,14 @@ MODEL_CONFIG = {
         "tts_speed": False,
         "max_tokens": 1000,
         "temperature": 0.7
-    }
+    },
+    "neura.swift1.o": {
+        "provider": "gemini",
+        "model_name": "gemini-2.5-flash",
+        "tts_speed": False,
+        "max_tokens": 1000,
+        "temperature": 0.7
+    },
 }
 
 # Configure Gemini
