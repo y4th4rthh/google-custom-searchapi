@@ -30,7 +30,7 @@ users_collection = db["users"]
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://neura-ai.netlify.app", "http://localhost:3000", "http://localhost:5173", "https://neura-explore-ai.netlify.app/",
+    allow_origins=["https://neura-ai.netlify.app", "http://localhost:3000", "http://localhost:5173", "https://neura-explore-ai.netlify.app/","https://neura-explore-ai.netlify.app",
                    "https://neura-share.netlify.app","https://dev-neura-ai.netlify.app" ,"https://admin-neura.netlify.app"],
     allow_credentials=True,
     allow_methods=["*"],
