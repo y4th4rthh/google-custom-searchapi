@@ -213,6 +213,11 @@ async def chat(req: TextRequest):
         raise HTTPException(
             status_code=500, detail=f"Chat processing error: {e}")
 
+@app.get("/ping")
+async def ping():
+    """Keep-alive / health check endpoint"""
+    return {"status": "ok"}
+
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
