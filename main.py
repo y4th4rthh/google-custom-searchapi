@@ -154,8 +154,8 @@ async def google_ai_answer(query):
     summary = await summarize_google_results(query, search_data)
     print(summary)
 
-    formatted_urls = "\n\n".join([d["link"] for d in search_data]) if search_data else "No links found."
-    return f"📝 **Summary:**\n\n{summary}\n\n🔗 **Sources:**\n{formatted_urls}"
+    formatted_urls = "\n\n".join([f"- {d['link']}" for d in search_data]) if search_data else "No links found."
+    return f"📝 **Summary:**\n\n{summary}\n\n🔗 **Sources:**\n\n{formatted_urls}"
 
 
 @app.post("/search")
