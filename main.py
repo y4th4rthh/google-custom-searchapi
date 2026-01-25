@@ -142,7 +142,7 @@ async def summarize_google_results(query, search_data):
 
     prompt = f"""
 Summarize the following Google search results for the query "{query}".
-Focus on useful, factual, up-to-date information. Keep it short and clear.
+Focus on useful, factual, up-to-date information. Keep it long, thorough and clear.
 Use emojis naturally where they help emphasize a point, make instructions clearer.
 
 Search Results:
