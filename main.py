@@ -5,6 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from dotenv import load_dotenv
+from groq import Groq
 from google.generativeai import configure, GenerativeModel
 from typing import Optional
 import uuid
@@ -22,6 +23,7 @@ load_dotenv()
 app = FastAPI()
 
 MONGO_URI = os.getenv("MONGO_URI")
+groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 mongo_client = AsyncIOMotorClient(MONGO_URI)
 db = mongo_client["neuraai"]
 chats_collection = db["chats"]
@@ -85,15 +87,25 @@ Answer with only one word: 'CURRENT' if it refers to something happening now or 
 Or 'GENERAL' if it's general knowledge, concepts, history, math, science, facts before 2021.
     """
     try:
-        model = GenerativeModel(model_name="gemini-2.5-flash",
-                        system_instruction="You are a helpful assistant that classifies user queries as either CURRENT or GENERAL based on their content.")
-        response = model.generate_content(prompt)
-        answer = response.text.strip().upper()
+        chat_completion = groq_client.chat.completions.create(
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant that classifies user queries as either CURRENT or GENERAL based on their content."},
+                    {"role": "user", "content": prompt}
+                ],
+                model="llama-3.3-70b-versatile",
+                max_tokens=2000,
+                temperature=0.9
+            )
+        response = chat_completion.choices[0].message.content
+        print(response)
+    
+        answer = "CURRENT"
+
         return "CURRENT" if "CURRENT" in answer else "GENERAL"
     except Exception as e:
         print(f"❌ Classification error: {e}")
         # fallback: default to GENERAL to avoid wasting Google API
-        return "GENERAL"
+        return "CURRENT"
 
 async def google_search(query: str, num_results: int = 5):
     url = "https://www.googleapis.com/customsearch/v1"
@@ -138,10 +150,17 @@ Search Results:
     """
 
     try:
-        model = GenerativeModel(model_name="gemini-2.5-flash",
-                        system_instruction="You are a helpful assistant that summarizes Google search results.")
-        response = model.generate_content(prompt)
-        return response.text.strip()
+        chat_completion = groq_client.chat.completions.create(
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant that summarizes Google search results."},
+                    {"role": "user", "content": prompt}
+                ],
+                model="llama-3.3-70b-versatile",
+                max_tokens=2000,
+                temperature=0.9
+            )
+        response = chat_completion.choices[0].message.content
+        return response.strip()
     except Exception as e:
         print(f"❌ Gemini summarization error: {e}")
         return "Summarization failed. Please try again."
