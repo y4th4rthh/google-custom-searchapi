@@ -163,7 +163,7 @@ Search Results:
         return response.strip()
     except Exception as e:
         print(f"❌ Gemini summarization error: {e}")
-        return "Summarization failed. Please try again."
+        return "Summarization Failed! Your daily quota has expired. Please switch to another model or try later :("
 
 
     
