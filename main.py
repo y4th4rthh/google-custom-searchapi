@@ -211,8 +211,8 @@ async def chat(req: TextRequest):
         return response_data
 
     except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Chat processing error: {e}")
+        response_data = {"text": "Your daily quota has expired. Please switch to another model or try later :(", "session_id": session_id}
+        return response_data
 
 @app.get("/ping")
 async def ping():
