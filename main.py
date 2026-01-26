@@ -308,7 +308,7 @@ async def chat(req: TextRequest):
 
         # Generate unique filename
         filename = f"{uuid.uuid4()}.mp3"
-        filepath = f"https://voice-assistant-ai-adnm.onrender.com/static/audio_responses/{filename}"
+        filepath = f"static/audio_responses/{filename}"
 
         # Create audio response with retry logic
         audio_url = None
@@ -318,7 +318,7 @@ async def chat(req: TextRequest):
             tts_success = create_tts_with_retry(sanitized_text, filepath)
 
             if tts_success:
-                audio_url = f"https://voice-assistant-ai-adnm.onrender.com/static/audio_responses/{filename}"
+                audio_url = f"/static/audio_responses/{filename}"
             else:
                 print("TTS failed after retries - returning text only")
 
