@@ -152,9 +152,9 @@ Use emojis naturally where they help emphasize a point, make instructions cleare
 
 Output format (STRICT):
 Paragraph 1
-\\u200b
+\u200b
 Paragraph 2
-\\u200b
+\u200b
 
 Search Results:
 {text_block}
