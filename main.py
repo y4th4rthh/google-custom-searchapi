@@ -150,12 +150,6 @@ Summarize the following Google search results for the query "{query}".
 Focus on useful, factual, up-to-date information. Keep it short and clear (maximum 1–2 paragraphs).
 Use emojis naturally where they help emphasize a point, make instructions clearer.
 
-Output format (STRICT):
-Paragraph 1
-\u200b
-Paragraph 2
-\u200b
-
 Search Results:
 {text_block}
     """
