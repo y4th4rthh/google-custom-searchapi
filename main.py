@@ -146,12 +146,23 @@ async def summarize_google_results(query, search_data):
     )
 
     prompt = f"""
-Summarize the following Google search results for the query "{query}".
-Focus on useful, factual, up-to-date information. Keep it short and clear (maximum 1–2 paragraphs).
-Use emojis naturally where they help emphasize a point, make instructions clearer.
+    You are an AI that summarizes web search results like a live search assistant.
 
-Search Results:
-{text_block}
+Task:
+Given a user query "{query}" and a block of search results "{text_block}", produce a concise, factual summary that captures the most relevant and up-to-date information. 
+
+Requirements:
+- Focus on useful, factual, and current details.
+- Summarize in 2–3 clear paragraphs (no more, no less).
+- Keep it neutral and informative; avoid giving opinions or recommendations unless widely reported across sources.
+- Use emojis naturally to highlight key points or clarify instructions (e.g., 🔍 for discovery, ⏱️ for recent updates).
+- Make the summary feel like a live search report — exploratory, context-rich, and easy to scan.
+
+Format example:
+1️⃣ First paragraph: Overview of the topic and key context.  
+2️⃣ Second paragraph: Most relevant updates, trends, or facts from recent sources.  
+3️⃣ Third paragraph (optional): Additional noteworthy details or clarifications, if needed.
+
     """
 
     try:
