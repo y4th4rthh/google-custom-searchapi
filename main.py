@@ -181,11 +181,15 @@ async def google_ai_answer(query):
     formatted_urls = "\n\n".join([f"- {d['link']}" for d in search_data]) if search_data else "No links found."
     # return f"📝 **Summary:**\n\n {" "} \n\n{summary}\n\n {" "} \n\n🔗 **Sources:**\n\n {" "} \n\n{formatted_urls}"
     return (
-    f"📝 **Summary:**\n\n"
+    "📝 **Summary:**\n\n"
+    "\u200b\n\n"
     f"{summary}\n\n"
-    f"🔗 **Sources:**\n\n"
+    "\u200b\n\n"
+    "🔗 **Sources:**\n\n"
+    "\u200b\n\n"
     f"{formatted_urls}"
-     )
+    )
+
 
 def create_tts_with_retry(text, filepath, max_retries=3):
     """Create TTS with retry logic and exponential backoff"""
