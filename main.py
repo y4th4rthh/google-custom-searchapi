@@ -278,6 +278,41 @@ def sanitize_text_for_tts(text: str) -> str:
     return text.strip()
 
 
+def sanitize_text_for_search(text: str) -> str:
+    """
+    Clean user input before sending to Google Search.
+    Removes markdown, emojis, and excessive whitespace.
+    """
+    # Remove code blocks
+    text = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
+
+    # Remove inline code
+    text = re.sub(r"`[^`]+`", "", text)
+
+    # Convert markdown links [text](url) → text
+    text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
+
+    # Remove bold / italic markers
+    text = re.sub(r"(\*\*|__)(.*?)\1", r"\2", text)
+    text = re.sub(r"(\*|_)(.*?)\1", r"\2", text)
+
+    # Remove headings
+    text = re.sub(r"#+\s*", "", text)
+
+    # Remove emojis
+    text = EMOJI_PATTERN.sub(" ", text)
+
+    # Replace newlines with space
+    text = text.replace("\n", " ")
+
+    # Remove extra symbols
+    text = re.sub(r"[>`•\-]+", " ", text)
+
+    # Collapse spaces
+    text = re.sub(r"\s+", " ", text)
+
+    return text.strip()
+
 
 @app.post("/search")
 async def chat(req: TextRequest):
@@ -293,13 +328,15 @@ async def chat(req: TextRequest):
         userId = req.user_id
         config = MODEL_CONFIG[req.model]
         chatvalue=""
+        raw_text = req.text
+        clean_search_text = sanitize_text_for_search(raw_text)
         
         
-        category = await classify_query(req.text)
+        category = await classify_query(clean_search_text)
         print(f"🧠 Query classified as: {category}")
 
         if category == "CURRENT":
-           ai_response = await google_ai_answer(query = req.text)
+           ai_response = await google_ai_answer(query = clean_search_text)
         else:
            if req.sessionId:
              chatdatas = chats_collection.find({"session_id":req.sessionId})
@@ -320,7 +357,7 @@ async def chat(req: TextRequest):
             chat_doc = {
                 "session_id": session_id,
                 "timestamp": datetime.datetime.utcnow(),
-                "user_text": req.text,
+                "user_text": clean_search_text,
                 "user_id": userId,
                 "model": req.model,
                 "ai_response": ai_response
