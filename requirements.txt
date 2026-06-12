@@ -3,6 +3,7 @@ uvicorn
 speechrecognition
 python-dotenv
 google-generativeai
+google-genai
 openai
 groq
 python-multipart

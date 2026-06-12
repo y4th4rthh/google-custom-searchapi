@@ -6,7 +6,8 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from groq import Groq
-from google.generativeai import configure, GenerativeModel
+from google import genai
+from google.genai import types
 from typing import Optional
 from gtts import gTTS
 import speech_recognition as sr
@@ -30,6 +31,8 @@ mongo_client = AsyncIOMotorClient(MONGO_URI)
 db = mongo_client["neuraai"]
 chats_collection = db["chats"]
 users_collection = db["users"]
+
+client = genai.Client()
 
 # Enable CORS
 app.add_middleware(
@@ -56,14 +59,14 @@ class TextRequest(BaseModel):
 MODEL_CONFIG = {
     "neura.essence1.o": {
         "provider": "gemini",
-        "model_name": "gemini-2.5-flash",
+        "model_name": "gemini-3.5-flash",
         "tts_speed": False,
         "max_tokens": 1000,
         "temperature": 0.7
     },
     "neura.swift1.o": {
         "provider": "gemini",
-        "model_name": "gemini-2.5-flash",
+        "model_name": "gemini-3.5-flash",
         "tts_speed": False,
         "max_tokens": 1000,
         "temperature": 0.7
@@ -71,7 +74,6 @@ MODEL_CONFIG = {
 }
 
 # Configure Gemini
-configure(api_key=os.getenv("GEMINI_API_KEY"))
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 GOOGLE_SEARCH_ENGINE_ID = os.getenv("GOOGLE_SEARCH_ENGINE_ID")
 
@@ -346,9 +348,14 @@ async def chat(req: TextRequest):
            else:
              sysPrompt = SYSTEM_PROMPT
 
-           model = GenerativeModel(model_name="gemini-2.5-flash",
-                        system_instruction=sysPrompt)
-           response = model.generate_content(req.text)
+           
+            response = client.models.generate_content(
+                model="gemini-3.5-flash",
+                contents=req.text,
+                config=types.GenerateContentConfig(
+                  system_instruction=sysPrompt,
+                ),
+            )
            ai_response = response.text
 
        
