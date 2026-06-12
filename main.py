@@ -349,7 +349,7 @@ async def chat(req: TextRequest):
              sysPrompt = SYSTEM_PROMPT
 
            
-            response = client.models.generate_content(
+           response = client.models.generate_content(
                 model="gemini-3.5-flash",
                 contents=req.text,
                 config=types.GenerateContentConfig(
