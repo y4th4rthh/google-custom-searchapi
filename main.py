@@ -99,7 +99,7 @@ Or 'GENERAL' if it's general knowledge, concepts, history, math, science, facts 
                     {"role": "system", "content": "You are a helpful assistant that classifies user queries as either CURRENT or GENERAL based on their content."},
                     {"role": "user", "content": prompt}
                 ],
-                model="llama-3.3-70b-versatile",
+                model="openai/gpt-oss-20b",
                 max_tokens=2000,
                 temperature=0.9
             )
@@ -173,7 +173,7 @@ Format example:
                     {"role": "system", "content": "You are a helpful assistant that summarizes Google search results."},
                     {"role": "user", "content": prompt}
                 ],
-                model="llama-3.3-70b-versatile",
+                model="openai/gpt-oss-20b",
                 max_tokens=2000,
                 temperature=0.9
             )
